@@ -1,0 +1,22 @@
+05_datos_ensayos
+================
+ENSAYOS PID\           un ensayo por carpeta, todos con el controlador PID
+ENSAYOS PI\            un ensayo por carpeta, todos con el controlador PI
+PID VS PI\             graficas de comparacion (se crean solas al correr el segundo controlador)
+IDENTIFICACION 23oct\  corridas con las que se identifico el modelo
+resumen_ensayos.csv    una fila por ensayo con las metricas (se llena solo desde MATLAB)
+
+COMO LEER LOS NOMBRES
+PS_85C_E1_06nov_1740  =  material PS, referencia 85 °C, ensayo (repeticion) 1, 6 de noviembre, 17:40
+   PS  = lamina BLANCA      PET = lamina TRANSPARENTE
+   _detenido = se paro antes de terminar
+Dentro de cada carpeta: .csv (datos) .mat .fig .png (grafica) consola.txt
+
+BITACORA
+06-nov  PI   PS_100C_E1_detenido  Parado en 450 s: la lamina se ablando (100 °C esta en la Tg del PS, 95-105 °C).
+06-nov  PID  PS_100C_E1_detenido  Parado en 739 s por lo mismo. Llega a 98 °C en 260 s y se mantiene 100.8 +- 0.4 °C.
+06-nov  PID  PS_85C_E1            Completo. Llega a 85 °C en 302 s, dentro de +-1 °C desde 460 s, error final -0.3 °C.
+06-nov  PI   PS_85C_E1            Completo. Llega a 85 °C en 475 s, termina en 86.5 °C (error -1.5 °C), no se estabiliza en 600 s.
+        -> PID: error integrado (IAE) 36 % menor, 3 veces mas estable, misma potencia en regimen (~24 %).
+
+PENDIENTE: repeticiones E2 y E3 de PID y PI (PS 85 °C); luego PET 60 °C.

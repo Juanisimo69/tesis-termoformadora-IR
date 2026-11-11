@@ -1,0 +1,15 @@
+# Compilacion de PlatformIO / VS Code
+.pio/
+.vscode/
+# MATLAB
+*.asv
+# Carpetas locales que NO van al repositorio
+01_documentos/
+02_presentaciones/
+07_cristian_original/
+_para_borrar/
+Claude outputs/
+# Archivos pesados (> 100 MB no caben en GitHub)
+*.mp4
+# Scripts de organizacion de un solo uso
+*.bat

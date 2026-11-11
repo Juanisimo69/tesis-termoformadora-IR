@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HEATFORM · Sistema de Termoformado</title>
+<style>
+/* =========================================================
+   HEATFORM — Dashboard industrial minimalista
+   Optimizado para ESP32 + AsyncWebServer (LittleFS/SPIFFS)
+   Sin dependencias externas. Solo Chart.js local.
+   ========================================================= */
+
+:root{
+  --bg:#0A0A0A;
+  --panel:#121212;
+  --panel-2:#161616;
+  --line:#222;
+  --line-2:#2a2a2a;
+  --text:#fff;
+  --muted:#8a8a8a;
+  --dim:#5a5a5a;
+  --accent:#FF5A00;
+  --accent-dim:#3a1505;
+  --ok:#4ade80;
+  --warn:#facc15;
+  --err:#ef4444;
+  --radius:6px;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:13px;
+  letter-spacing:.02em;
+  overflow:hidden;
+  background-image:
+    linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ---------- Layout ---------- */
+.app{
+  display:grid;
+  grid-template-rows: 56px 1fr 28px;
+  height:100vh;
+}
+.topbar{
+  display:flex;align-items:center;
+  border-bottom:1px solid var(--line);
+  padding:0 20px;
+  gap:24px;
+  background:rgba(10,10,10,.85);
+}
+.logo{
+  font-family:var(--mono);
+  font-weight:700;
+  letter-spacing:.18em;
+  font-size:15px;
+}
+.subtitle{
+  font-family:var(--mono);
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+}
+.topbar .right{
+  margin-left:auto;
+  display:flex;align-items:center;gap:18px;
+  font-family:var(--mono);font-size:12px;color:var(--muted);
+}
+.divider{width:1px;height:18px;background:var(--line-2)}
+
+.wifi{display:inline-block;width:14px;height:10px;position:relative}
+.wifi::before,.wifi::after,.wifi i{
+  content:"";position:absolute;left:50%;bottom:0;
+  border:1px solid var(--accent);border-bottom:none;border-radius:50% 50% 0 0/100% 100% 0 0;
+  transform:translateX(-50%);
+}
+.wifi::before{width:14px;height:7px}
+.wifi::after{width:9px;height:5px}
+.wifi i{width:4px;height:2px;background:var(--accent);border:none;border-radius:50%}
+
+.main{
+  display:grid;
+  grid-template-columns: 200px 1fr;
+  min-height:0;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar{
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;
+  padding:16px 0;
+}
+.nav{display:flex;flex-direction:column;gap:2px;padding:0 12px;flex:1}
+.nav button{
+  background:none;border:none;color:var(--muted);
+  font-family:var(--mono);font-size:12px;letter-spacing:.18em;
+  text-align:left;padding:12px 14px;cursor:pointer;
+  display:flex;align-items:center;gap:12px;
+  border-left:2px solid transparent;
+  text-transform:uppercase;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.nav button:hover{color:#ddd;background:rgba(255,255,255,.02)}
+.nav button.active{color:var(--accent);border-left-color:var(--accent)}
+.nav .ico{
+  display:inline-block;width:14px;height:14px;
+  border:1px solid currentColor;border-radius:2px;flex-shrink:0;
+  position:relative;
+}
+.nav .ico.home::before{content:"";position:absolute;inset:3px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg)}
+.nav .ico.ctrl{border:none;background:linear-gradient(currentColor,currentColor) center/100% 1px no-repeat}
+.nav .ico.mat{border-radius:1px}
+.nav .ico.chart::before{content:"";position:absolute;left:2px;bottom:2px;right:2px;height:6px;border-left:1px solid currentColor;border-bottom:1px solid currentColor}
+.nav .ico.cfg{border-radius:50%}
+.nav .ico.info::before{content:"i";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px}
+
+.stop-btn{
+  margin:16px 12px 0;
+  background:transparent;
+  border:1px solid var(--accent);
+  color:var(--accent);
+  font-family:var(--mono);
+  font-size:12px;letter-spacing:.2em;
+  padding:14px 12px;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  border-radius:var(--radius);
+  text-transform:uppercase;
+  transition:background .15s;
+}
+.stop-btn:hover{background:rgba(255,90,0,.08)}
+.stop-btn .sq{width:10px;height:10px;border:1px solid var(--accent)}
+
+/* ---------- Content ---------- */
+.content{
+  padding:18px;
+  overflow:auto;
+  display:none;
+}
+.content.active{display:block}
+
+.grid{display:grid;gap:14px}
+.dash{
+  grid-template-columns: 2fr 1.2fr;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "estado temp"
+    "ctrl   sal"
+    "graf   res";
+}
+.p-estado{grid-area:estado}
+.p-temp{grid-area:temp}
+.p-ctrl{grid-area:ctrl}
+.p-sal{grid-area:sal}
+.p-graf{grid-area:graf}
+.p-res{grid-area:res}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px 20px;
+  position:relative;
+}
+.panel h2{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.28em;
+  color:var(--muted);
+  text-transform:uppercase;
+  font-weight:500;
+  margin-bottom:14px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.tag{
+  font-family:var(--mono);font-size:10px;
+  border:1px solid var(--accent);color:var(--accent);
+  padding:4px 10px;border-radius:3px;letter-spacing:.2em;
+}
+
+.row{display:flex;gap:24px;flex-wrap:wrap}
+.col{display:flex;flex-direction:column;gap:4px;min-width:0}
+.lbl{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase}
+.val{font-family:var(--mono);font-weight:600;color:var(--text);font-size:18px}
+.val.accent{color:var(--accent)}
+.val.big{font-size:34px;font-weight:300;letter-spacing:-.01em}
+.val.huge{font-size:42px;font-weight:300}
+.unit{font-size:11px;color:var(--muted);font-weight:400;margin-left:4px}
+
+.sep{height:1px;background:var(--line);margin:14px 0}
+
+/* progreso */
+.bar{
+  position:relative;height:6px;background:var(--line);border-radius:2px;overflow:hidden;
+}
+.bar > span{display:block;height:100%;background:var(--accent);width:0;transition:width .4s}
+.bar.thin{height:4px}
+.scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:4px}
+
+/* iconos */
+.clk{display:inline-block;width:22px;height:22px;border:1px solid var(--muted);border-radius:50%;position:relative;flex-shrink:0}
+.clk::before,.clk::after{content:"";position:absolute;left:50%;top:50%;background:var(--muted);transform-origin:0 0}
+.clk::before{width:6px;height:1px;transform:translate(-1px,-50%) rotate(-45deg)}
+.clk::after{width:1px;height:7px;transform:translate(-50%,-1px)}
+.heat{font-family:var(--mono);color:var(--accent);font-size:18px;letter-spacing:-2px}
+
+/* tabla materiales */
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.mat-card{
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px;cursor:pointer;background:var(--panel);
+  transition:border-color .15s, background .15s;
+}
+.mat-card:hover{border-color:var(--line-2);background:var(--panel-2)}
+.mat-card.selected{border-color:var(--accent);background:rgba(255,90,0,.04)}
+.mat-card h3{font-family:var(--mono);font-size:18px;letter-spacing:.1em;margin-bottom:6px}
+.mat-card.selected h3{color:var(--accent)}
+.mat-card p{font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px}
+.mat-card .meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px}
+.mat-card .meta b{color:var(--text);font-weight:500}
+
+/* controles manual */
+.field{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.field label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;display:flex;justify-content:space-between}
+.field label b{color:var(--accent);font-family:var(--mono)}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--line);border-radius:2px;outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:14px;height:14px;background:var(--accent);border-radius:50%;cursor:pointer;border:2px solid var(--bg);
+}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border-radius:50%;cursor:pointer;border:2px solid var(--bg)}
+
+select,input[type=number]{
+  background:var(--panel-2);border:1px solid var(--line);color:var(--text);
+  font-family:var(--mono);font-size:13px;padding:8px 10px;border-radius:4px;outline:none;width:100%;
+}
+select:focus,input[type=number]:focus{border-color:var(--accent)}
+
+.pid-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* footer */
+.footer{
+  border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.3em;text-transform:uppercase;
+}
+
+/* salidas */
+.out-row{display:grid;grid-template-columns:1fr auto 100px;gap:12px;align-items:center;padding:8px 0}
+.out-row + .out-row{border-top:1px solid var(--line)}
+.out-row .name{font-size:13px;color:#ddd}
+.out-row .v{font-family:var(--mono);color:var(--accent);font-size:13px;text-align:right}
+
+/* resumen */
+.sum-row{display:flex;justify-content:space-between;padding:10px 0;font-size:13px}
+.sum-row + .sum-row{border-top:1px solid var(--line)}
+.sum-row span:first-child{color:var(--muted)}
+.sum-row span:last-child{font-family:var(--mono)}
+
+/* gráfica */
+.chart-wrap{position:relative;height:220px}
+
+/* status dot */
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* responsive */
+@media (max-width: 1024px){
+  .dash{grid-template-columns:1fr;grid-template-areas:"estado" "temp" "ctrl" "sal" "graf" "res"}
+}
+@media (max-width: 720px){
+  .main{grid-template-columns:64px 1fr}
+  .nav button span:not(.ico){display:none}
+  .stop-btn{padding:12px 0;font-size:0}
+  .stop-btn .sq{width:14px;height:14px}
+  .topbar .right .ip,.topbar .subtitle{display:none}
+  .pid-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ── Registro de datos ── */
+.log-wrap{max-height:220px;overflow-y:auto;border:1px solid var(--line);border-radius:var(--radius);margin-top:12px}
+.log-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
+.log-table th{position:sticky;top:0;background:var(--panel-2);color:var(--muted);letter-spacing:.15em;text-transform:uppercase;padding:7px 10px;text-align:right;border-bottom:1px solid var(--line)}
+.log-table th:first-child,.log-table td:first-child{text-align:left;padding-left:12px}
+.log-table td{padding:5px 10px;text-align:right;border-bottom:1px solid rgba(255,255,255,.03);color:#ccc;white-space:nowrap}
+.log-table tr:last-child td{border-bottom:none}
+.log-table tr:hover td{background:rgba(255,255,255,.02)}
+.t-pwm{color:var(--accent)!important}
+.t-sp{color:var(--ok)!important}
+.log-empty{text-align:center;color:var(--dim);font-family:var(--mono);font-size:11px;padding:28px 0;letter-spacing:.1em}
+.log-btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:10px}
+.log-btn{background:none;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.15em;padding:6px 14px;border-radius:4px;cursor:pointer;text-transform:uppercase;transition:border-color .15s,color .15s}
+.log-btn:hover{border-color:var(--accent);color:var(--accent)}
+.rec-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--err);margin-right:6px;vertical-align:middle;animation:pulse 1s infinite}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ TOPBAR ============ -->
+  <header class="topbar">
+    <div class="logo">HEATFORM</div>
+    <div class="subtitle">Sistema de termoformado</div>
+    <div class="right">
+      <span><span class="wifi"><i></i></span> <span id="wifiStatus">CONECTADO</span></span>
+      <span class="divider"></span>
+      <span class="ip" id="ipAddr">192.168.4.1</span>
+      <span class="divider"></span>
+      <span>v<span id="fwVer">1.0</span></span>
+    </div>
+  </header>
+
+  <!-- ============ MAIN ============ -->
+  <div class="main">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav class="nav" id="nav">
+        <button data-tab="dashboard" class="active"><span class="ico home"></span><span>Dashboard</span></button>
+        <button data-tab="control"><span class="ico ctrl"></span><span>Control</span></button>
+        <button data-tab="materiales"><span class="ico mat"></span><span>Materiales</span></button>
+        <button data-tab="config"><span class="ico cfg"></span><span>Configuración</span></button>
+        <button data-tab="info"><span class="ico info"></span><span>Información</span></button>
+      </nav>
+      <button class="stop-btn" onclick="stopCycle()"><span class="sq"></span><span>DETENER CICLO</span></button>
+    </aside>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section class="content active" id="tab-dashboard">
+      <div class="grid dash">
+
+        <!-- Estado -->
+        <div class="panel p-estado">
+          <h2>Estado actual <span class="tag" id="procState">EN PROCESO</span></h2>
+          <div class="row">
+            <div class="col" style="flex:1">
+              <span class="lbl">Material</span>
+              <span class="val accent" id="matName">PET</span>
+            </div>
+            <div class="col" style="flex:1">
+              <span class="lbl">Modo</span>
+              <span class="val" id="modeName">ANÁLOGO</span>
+            </div>
+          </div>
+          <div class="sep"></div>
+          <div class="row">
+            <div class="col" style="display:flex;flex-direction:row;gap:12px;align-items:center;flex:1">
+              <span class="clk"></span>
+              <div>
+                <div class="lbl">Tiempo restante</div>
+                <div class="val accent" style="font-size:24px"><span id="timer">01:24</span><span class="unit">mm:ss</span></div>
+              </div>
+            </div>
+            <div class="col" style="flex:1">
+              <span class="lbl">Etapa</span>
+              <span class="val" id="stage" style="font-size:14px">CALENTAMIENTO</span>
+              <span class="heat">≋≋≋</span>
+            </div>
+            <div class="col" style="flex:1">
+              <span class="lbl">Ciclo</span>
+              <span class="val" id="cycle" style="font-size:14px">1 / 1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Temperatura -->
+        <div class="panel p-temp">
+          <h2>Temperatura</h2>
+          <div class="row">
+            <div class="col" style="flex:1">
+              <span class="lbl">Objetivo</span>
+              <span class="val accent huge"><span id="tTarget">145.0</span><span class="unit">°C</span></span>
+            </div>
+            <div class="col" style="flex:1">
+              <span class="lbl">Actual</span>
+              <span class="val huge"><span id="tCurrent">132.4</span><span class="unit">°C</span></span>
+            </div>
+          </div>
+          <div style="margin-top:16px">
+            <div class="bar"><span id="tBar"></span></div>
+            <div class="scale"><span>0</span><span>125</span><span>250</span></div>
+          </div>
+        </div>
+
+        <!-- Control -->
+        <div class="panel p-ctrl">
+          <h2>Control</h2>
+          <div class="row" style="gap:32px">
+            <div class="col" style="flex:1;min-width:120px">
+              <span class="lbl">PWM</span>
+              <span class="val accent big"><span id="pwm">72</span><span class="unit">%</span></span>
+              <div class="bar thin" style="margin-top:8px"><span id="pwmBar"></span></div>
+              <div class="scale"><span>0</span><span>100</span></div>
+            </div>
+            <div class="col" style="flex:1">
+              <span class="lbl">Error</span>
+              <span class="val big"><span id="err">-12.6</span><span class="unit">°C</span></span>
+            </div>
+            <div class="col" style="flex:1">
+              <span class="lbl">Integral</span>
+              <span class="val big" id="integ">35.2</span>
+            </div>
+            <div class="col" style="flex:1">
+              <span class="lbl">Derivada</span>
+              <span class="val big" id="deriv">-1.8</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Salidas -->
+        <div class="panel p-sal">
+          <h2>Salidas</h2>
+          <div class="out-row">
+            <span class="name">Calefactor (PWM)</span>
+            <span class="v"><span id="oHeat">72</span> %</span>
+            <div class="bar thin"><span id="oHeatBar"></span></div>
+          </div>
+          <div class="out-row">
+            <span class="name">Ventilador</span>
+            <span class="v"><span id="oFan">30</span> %</span>
+            <div class="bar thin"><span id="oFanBar"></span></div>
+          </div>
+          <div class="out-row">
+            <span class="name">Bomba de vacío</span>
+            <span class="v" id="oVac">OFF</span>
+            <div class="bar thin"><span id="oVacBar"></span></div>
+          </div>
+        </div>
+
+        <!-- Gráfica -->
+        <div class="panel p-graf">
+          <h2>Perfil de temperatura
+            <span style="display:flex;gap:18px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.15em">
+              <span><span style="display:inline-block;width:18px;height:2px;background:var(--accent);vertical-align:middle"></span> Actual</span>
+              <span><span style="display:inline-block;width:18px;border-top:1px dashed #888;vertical-align:middle"></span> Objetivo</span>
+            </span>
+          </h2>
+          <div class="chart-wrap"><canvas id="tempChart"></canvas></div>
+        </div>
+
+        <!-- Resumen -->
+        <div class="panel p-res">
+          <h2>Resumen del ciclo</h2>
+          <div class="sum-row"><span>Tiempo total</span><span id="sTotal">02:30</span></div>
+          <div class="sum-row"><span>Tiempo transcurrido</span><span id="sElapsed">01:06</span></div>
+          <div class="sum-row"><span>Temp. máxima alcanzada</span><span id="sMax">134.1 °C</span></div>
+          <div class="sum-row"><span>Consumo estimado</span><span id="sKwh">0.18 kWh</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ CONTROL (modo manual + PID) ============ -->
+    <section class="content" id="tab-control">
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:14px">
+
+        <div class="panel">
+          <h2>Modo manual</h2>
+          <div class="field">
+            <label>Temperatura objetivo <b><span id="mTempV">150</span> °C</b></label>
+            <input type="range" id="mTemp" min="0" max="250" value="150" oninput="mTempV.textContent=this.value">
+          </div>
+          <div class="field">
+            <label>Tiempo (s) <b><span id="mTimeV">120</span> s</b></label>
+            <input type="range" id="mTime" min="10" max="600" value="120" oninput="mTimeV.textContent=this.value">
+          </div>
+          <div class="field">
+            <label>Tipo de control</label>
+            <select id="mMode" onchange="renderControlParams(this.value)">
+              <option value="PWM">PWM directo</option>
+              <option value="PI">PI</option>
+              <option value="PID" selected>PID</option>
+              <option value="PIDF_FF">PIDF + FeedForward</option>
+            </select>
+          </div>
+          <button class="stop-btn" style="margin:8px 0 0;color:var(--ok);border-color:var(--ok)" onclick="startManual()">
+            <span>INICIAR CICLO MANUAL</span>
+          </button>
+        </div>
+
+        <div class="panel">
+          <h2>Parámetros de control <span class="tag" id="ctrlModeTag">PID</span></h2>
+          <div class="pid-grid" id="pidGrid"></div>
+          <div class="sep"></div>
+          <button class="stop-btn" style="margin:0;color:var(--accent)" onclick="saveParams()">
+            <span>GUARDAR PARÁMETROS</span>
+          </button>
+          <p style="margin-top:14px;color:var(--muted);font-size:12px;line-height:1.5">
+            Los valores se enviarán a la ESP32 mediante <code style="color:var(--accent)">POST /set</code>.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Panel de registro de datos -->
+      <div class="panel" style="margin-top:14px">
+        <h2>Registro del ciclo
+          <span id="recIndicator" style="display:none;align-items:center">
+            <span class="rec-dot"></span>
+            <span style="font-size:10px;color:var(--err);letter-spacing:.2em">GRABANDO</span>
+          </span>
+          <span id="logCount" style="font-size:10px;color:var(--dim);font-weight:400">0 muestras</span>
+        </h2>
+        <div class="log-wrap" id="logWrap">
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th style="text-align:left">Marca de tiempo</th>
+                <th>PWM (%)</th>
+                <th>Setpoint (°C)</th>
+                <th>Temp. (°C)</th>
+              </tr>
+            </thead>
+            <tbody id="logBody"></tbody>
+          </table>
+        </div>
+        <p class="log-empty" id="logEmpty">Sin datos — Inicia un ciclo para comenzar a grabar</p>
+        <div class="log-btn-row">
+          <button class="log-btn" onclick="clearLog()">Limpiar</button>
+          <button class="log-btn" onclick="exportCSV()" style="border-color:var(--accent);color:var(--accent)">Exportar CSV</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============ MATERIALES ============ -->
+    <section class="content" id="tab-materiales">
+      <div class="panel">
+        <h2>Materiales predefinidos</h2>
+        <div class="mat-grid" id="matGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ CONFIG ============ -->
+    <section class="content" id="tab-config">
+      <div class="panel">
+        <h2>Configuración del sistema</h2>
+        <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+          <div class="field"><label>SSID WiFi</label><input type="text" value="HEATFORM_AP" style="background:var(--panel-2);border:1px solid var(--line);color:var(--text);font-family:var(--mono);padding:8px 10px;border-radius:4px"></div>
+          <div class="field"><label>Frecuencia PWM</label><input type="number" value="5000"></div>
+          <div class="field"><label>Periodo muestreo (ms)</label><input type="number" value="100"></div>
+          <div class="field"><label>Temp. máxima (°C)</label><input type="number" value="250"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ INFO ============ -->
+    <section class="content" id="tab-info">
+      <div class="panel">
+        <h2>Información del dispositivo</h2>
+        <div class="sum-row"><span>Firmware</span><span>v1.0</span></div>
+        <div class="sum-row"><span>Hardware</span><span>ESP32-WROOM-32</span></div>
+        <div class="sum-row"><span>Sensor</span><span>MAX6675 / Termopar K</span></div>
+        <div class="sum-row"><span>Memoria libre (heap)</span><span id="iHeap">— kB</span></div>
+        <div class="sum-row"><span>Uptime</span><span id="iUp">00:00:00</span></div>
+        <p style="margin-top:18px;color:var(--muted);font-size:12px;line-height:1.6">
+          HEATFORM · Sistema de termoformado controlado por ESP32.<br>
+          Interfaz embebida servida desde LittleFS / AsyncWebServer.
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="footer">HEATFORM · Ingeniería Electrónica · 2025</footer>
+</div>
+
+<script src="chart.js"></script>
+<script>
+/* =========================================================
+   HEATFORM — Lógica de UI
+   --------------------------------------------------------
+   Toda la actualización de datos pasa por funciones
+   centralizadas. Para integrar con la ESP32 basta con
+   llamar estas funciones desde fetch("/data") o un
+   WebSocket que envíe JSON en tu loop de control.
+   ========================================================= */
+
+/* ---------- Navegación entre tabs ---------- */
+const nav = document.getElementById('nav');
+nav.addEventListener('click', e => {
+  const btn = e.target.closest('button[data-tab]');
+  if(!btn) return;
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.content').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+});
+
+/* ---------- Materiales predefinidos ---------- */
+const MATERIALS = [
+  {id:'PET', temp:145, time:90,  desc:'Politereftalato de etileno. Termoformado de blísters y bandejas.'},
+  {id:'PS',  temp:135, time:75,  desc:'Poliestireno. Empaque ligero, vasos y bandejas desechables.'},
+  {id:'PLA', temp:110, time:60,  desc:'Poliácido láctico. Bioplástico de baja temperatura, biodegradable.'},
+  {id:'ABS', temp:175, time:120, desc:'Acrilonitrilo butadieno estireno. Carcasas y piezas técnicas.'}
+];
+let currentMat = 'PET';
+
+function renderMaterials(){
+  const g = document.getElementById('matGrid');
+  g.innerHTML = MATERIALS.map(m => `
+    <div class="mat-card ${m.id===currentMat?'selected':''}" data-id="${m.id}">
+      <h3>${m.id}</h3>
+      <div class="meta"><span>Objetivo</span><b>${m.temp} °C</b></div>
+      <div class="meta"><span>Tiempo</span><b>${m.time} s</b></div>
+      <p>${m.desc}</p>
+    </div>`).join('');
+  g.querySelectorAll('.mat-card').forEach(c=>{
+    c.onclick = ()=> selectMaterial(c.dataset.id);
+  });
+}
+function selectMaterial(id){
+  const m = MATERIALS.find(x=>x.id===id); if(!m) return;
+  currentMat = id;
+  updateMaterial(id);
+  updateTemperature(currentTemp, m.temp);
+  renderMaterials();
+  // TODO: enviar a ESP32 -> fetch('/set?material='+id)
+}
+
+/* ---------- Estado interno ---------- */
+let currentTemp = 132.4, targetTemp = 145.0, maxTemp = 250;
+let timeData = [], tempData = [], targetData = [];
+
+/* ---------- API pública de actualización ----------
+   Llamar desde fetch o WebSocket cuando lleguen
+   datos de la ESP32. */
+
+function updateTemperature(current, target){
+  currentTemp = current; if(target!=null) targetTemp = target;
+  document.getElementById('tCurrent').textContent = current.toFixed(1);
+  document.getElementById('tTarget').textContent  = targetTemp.toFixed(1);
+  document.getElementById('tBar').style.width = Math.min(100, (current/maxTemp)*100) + '%';
+}
+function updatePWM(value){
+  document.getElementById('pwm').textContent = Math.round(value);
+  document.getElementById('pwmBar').style.width = value + '%';
+}
+function updateControlData(error, integral, derivative){
+  document.getElementById('err').textContent   = error.toFixed(1);
+  document.getElementById('integ').textContent = integral.toFixed(1);
+  document.getElementById('deriv').textContent = derivative.toFixed(1);
+}
+function updateOutputs(heater, fan, vacuum){
+  document.getElementById('oHeat').textContent = Math.round(heater);
+  document.getElementById('oHeatBar').style.width = heater+'%';
+  document.getElementById('oFan').textContent  = Math.round(fan);
+  document.getElementById('oFanBar').style.width = fan+'%';
+  document.getElementById('oVac').textContent  = vacuum?'ON':'OFF';
+  document.getElementById('oVacBar').style.width = vacuum?'100%':'0%';
+}
+function updateTimer(seconds){
+  const m = String(Math.floor(seconds/60)).padStart(2,'0');
+  const s = String(seconds%60).padStart(2,'0');
+  document.getElementById('timer').textContent = `${m}:${s}`;
+}
+function updateChart(temp){
+  const t = new Date();
+  const lbl = String(t.getMinutes()).padStart(2,'0')+':'+String(t.getSeconds()).padStart(2,'0');
+  timeData.push(lbl); tempData.push(temp); targetData.push(targetTemp);
+  if(timeData.length>60){ timeData.shift(); tempData.shift(); targetData.shift(); }
+  if(chart){ chart.update('none'); }
+}
+function updateMaterial(name){ document.getElementById('matName').textContent = name; }
+function updateStatus(state){ document.getElementById('procState').textContent = state; }
+
+/* ---------- Acciones (a enviar a ESP32) ---------- */
+function stopCycle(){
+  fetch('/set',{method:'POST',body:new URLSearchParams({cmd:'stop'})})
+    .catch(()=>{});
+  updateStatus('DETENIDO');
+  logSetRunning(false);
+}
+async function startManual(){
+  const t = +document.getElementById('mTemp').value;
+  const s = +document.getElementById('mTime').value;
+  const m = document.getElementById('mMode').value;
+
+  const body = new URLSearchParams({ mode: m, temp: t, time: s });
+
+  // En modo PWM directo leer el porcentaje del campo dinámico
+  if(m === 'PWM'){
+    const pwmEl = document.getElementById('pwmOut');
+    body.append('pwm', pwmEl ? pwmEl.value : '50');
+  }
+
+  try {
+    const r = await fetch('/start', { method:'POST', body });
+    if(r.ok){
+      updateTemperature(currentTemp, t);
+      updateStatus('EN PROCESO');
+      logSetRunning(true);
+    } else {
+      console.warn('ESP32 rechazó /start:', r.status);
+    }
+  } catch(e){
+    console.warn('Sin conexión con ESP32:', e);
+    // Feedback visual de error en el botón
+    const btn = document.querySelector('[onclick=\"startManual()\"]');
+    if(btn){ const orig=btn.style.borderColor; btn.style.borderColor='var(--err)'; setTimeout(()=>btn.style.borderColor=orig,1500); }
+  }
+}
+/* ---------- Parámetros dinámicos según el tipo de control ----------
+   Cada modo de control expone únicamente los campos relevantes:
+     PWM     -> salida PWM directa en %
+     PI      -> Kp, Ki
+     PID     -> Kp, Ki, Kd
+     PIDF+FF -> Kp, Ki, Kd, Tf (filtro derivativo), Ts (muestreo)
+*/
+const CONTROL_PARAMS = {
+  PWM:     [{id:'pwmOut', label:'PWM (%)', value:50, step:1,    min:0, max:100}],
+  PI:      [{id:'kp', label:'Kp', value:2.50, step:0.01},
+            {id:'ki', label:'Ki', value:0.40, step:0.01}],
+  PID:     [{id:'kp', label:'Kp', value:2.50, step:0.01},
+            {id:'ki', label:'Ki', value:0.40, step:0.01},
+            {id:'kd', label:'Kd', value:0.10, step:0.01}],
+  PIDF_FF: [{id:'kp', label:'Kp', value:2.50, step:0.01},
+            {id:'ki', label:'Ki', value:0.40, step:0.01},
+            {id:'kd', label:'Kd', value:0.10, step:0.01},
+            {id:'tf', label:'Tf', value:0.05, step:0.001},
+            {id:'ts', label:'Ts (s)', value:0.10, step:0.01}]
+};
+const MODE_LABELS = { PWM:'PWM', PI:'PI', PID:'PID', PIDF_FF:'PIDF+FF' };
+let currentMode = 'PID';
+// Memoria de los últimos valores ingresados por el usuario, por id de campo.
+const paramMemory = {};
+
+function renderControlParams(mode){
+  currentMode = mode;
+  document.getElementById('ctrlModeTag').textContent = MODE_LABELS[mode] || mode;
+  const grid = document.getElementById('pidGrid');
+  // Ajustar columnas: PWM (1), PI (2), PID (3), PIDF+FF (5)
+  const cols = CONTROL_PARAMS[mode].length;
+  grid.style.gridTemplateColumns = `repeat(${Math.min(cols,4)},1fr)`;
+  grid.innerHTML = CONTROL_PARAMS[mode].map(p => {
+    const v = (paramMemory[p.id] !== undefined) ? paramMemory[p.id] : p.value;
+    const extra = (p.min!=null?` min="${p.min}"`:'') + (p.max!=null?` max="${p.max}"`:'');
+    return `<div class="field">
+      <label>${p.label}</label>
+      <input type="number" id="${p.id}" step="${p.step}" value="${v}"${extra}>
+    </div>`;
+  }).join('');
+}
+
+function saveParams(){
+  const params = { mode: currentMode };
+  CONTROL_PARAMS[currentMode].forEach(p => {
+    const el = document.getElementById(p.id);
+    if(el){ params[p.id] = +el.value; paramMemory[p.id] = +el.value; }
+  });
+  // TODO: fetch('/set/pid', {method:'POST', body: JSON.stringify(params)})
+  console.log('Parámetros guardados:', params);
+}
+
+/* ---------- Chart.js (local) ---------- */
+const chartOpts = {
+  type: 'line',
+  data: {
+    labels: timeData,
+    datasets: [
+      { label:'Actual',  data: tempData,   borderColor:'#FF5A00', backgroundColor:'rgba(255,90,0,.08)', borderWidth:2, tension:.35, fill:true, pointRadius:0 },
+      { label:'Objetivo', data: targetData, borderColor:'#888', borderWidth:1, borderDash:[5,4], pointRadius:0, fill:false }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false, animation:false,
+    plugins:{ legend:{display:false} },
+    scales:{
+      x:{ grid:{color:'#1c1c1c'}, ticks:{color:'#666', font:{family:'monospace',size:10}} },
+      y:{ min:0, max:250, grid:{color:'#1c1c1c'}, ticks:{color:'#666', font:{family:'monospace',size:10}, stepSize:50} }
+    }
+  }
+};
+const chart  = new Chart(document.getElementById('tempChart').getContext('2d'),  JSON.parse(JSON.stringify(chartOpts)));
+chart.data.labels = timeData; chart.data.datasets[0].data = tempData; chart.data.datasets[1].data = targetData;
+
+/* ---------- Init ---------- */
+renderMaterials();
+renderControlParams(currentMode);
+
+/* ---------- Polling de datos ----------
+   Cuando subas esto a la ESP32, descomenta el bloque
+   siguiente. La ESP32 debe responder en /data con un
+   JSON como:
+   {
+     "temp":132.4, "target":145.0,
+     "pwm":72, "error":-12.6, "integral":35.2, "derivative":-1.8,
+     "heater":72, "fan":30, "vacuum":false,
+     "timer":84, "state":"EN PROCESO", "material":"PET"
+   }
+*/
+
+async function poll(){
+  try{
+    const r = await fetch('/data'); const d = await r.json();
+    updateTemperature(d.temp, d.target);
+    updatePWM(d.pwm);
+    updateControlData(d.error, d.integral, d.derivative);
+    updateOutputs(d.heater, d.fan, d.vacuum);
+    updateTimer(d.timer);
+    updateStatus(d.state);
+    updateMaterial(d.material);
+    updateChart(d.temp);
+    // Gestionar log automático por transición de estado
+    if(d.state==='EN PROCESO' && !logRunning) logSetRunning(true);
+    if(d.state!=='EN PROCESO' && logRunning)  logSetRunning(false);
+    if(logRunning) addLogRow(d.pwm, d.target, d.temp);
+  }catch(e){ console.warn('ESP32 sin respuesta'); }
+}
+/* ---------- Registro de datos ---------- */
+let logData    = [];
+let logRunning = false;
+let logSeq     = 0;
+let logStartMs = 0;
+
+function logSetRunning(active){
+  logRunning = active;
+  const ind = document.getElementById('recIndicator');
+  ind.style.display = active ? 'inline-flex' : 'none';
+  if(active){ logStartMs = Date.now(); }
+}
+
+function addLogRow(pwm, setpoint, temp){
+  const now  = new Date();
+  const ts   = String(now.getHours()).padStart(2,'0')+':'+
+               String(now.getMinutes()).padStart(2,'0')+':'+
+               String(now.getSeconds()).padStart(2,'0');
+  const elap = ((Date.now()-logStartMs)/1000).toFixed(1);
+  logSeq++;
+  logData.push({seq:logSeq, ts, elap,
+    pwm:parseFloat(pwm).toFixed(1),
+    sp:parseFloat(setpoint).toFixed(1),
+    temp:parseFloat(temp).toFixed(1)});
+  renderLog();
+}
+
+function renderLog(){
+  const tbody = document.getElementById('logBody');
+  const empty = document.getElementById('logEmpty');
+  const count = document.getElementById('logCount');
+  if(!logData.length){
+    tbody.innerHTML='';
+    empty.style.display='block';
+    count.textContent='0 muestras';
+    return;
+  }
+  empty.style.display='none';
+  count.textContent = logData.length+' muestras';
+  const rows = logData.slice(-300); // mostrar últimas 300
+  tbody.innerHTML = rows.map(r=>`
+    <tr>
+      <td>${r.seq}</td>
+      <td>${r.ts}<span style="color:var(--dim);margin-left:6px">+${r.elap}s</span></td>
+      <td class="t-pwm">${r.pwm}</td>
+      <td class="t-sp">${r.sp}</td>
+      <td>${r.temp}</td>
+    </tr>`).join('');
+  const wrap = document.getElementById('logWrap');
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function clearLog(){
+  logData=[]; logSeq=0; renderLog();
+}
+
+function exportCSV(){
+  if(!logData.length){ alert('No hay datos para exportar.'); return; }
+  const hdr  = '#,Hora,Elapsed(s),PWM(%),Setpoint(oC),Temp(oC)\n';
+  const rows = logData.map(r=>`${r.seq},${r.ts},${r.elap},${r.pwm},${r.sp},${r.temp}`).join('\n');
+  const blob = new Blob([hdr+rows],{type:'text/csv'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href=url; a.download='heatform_log.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+setInterval(poll, 500);
+
+</script>
+</body>
+</html>
