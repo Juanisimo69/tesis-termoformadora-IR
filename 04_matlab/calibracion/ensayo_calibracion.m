@@ -5,7 +5,7 @@
 % MODO = "multimetro": termocupla tipo K del multimetro (UT33) pegada con Kapton a la lamina,
 %                      a ~1 cm del punto del IR. La termocupla ORIGINAL de la camara se queda conectada.
 %                      Al final de cada escalon suena un pitido y sale una ventana para escribir
-%                      lo que marca el multimetro (y, si quieres, el centro y el termometro laser).
+%                      lo que marca el multimetro y, si quieres, el termometro laser (punto, cinta, centro).
 % MODO = "bornera":    termocupla tipo K conectada en la bornera en lugar de la original (registro automatico).
 %
 % Guarda todo en 05_datos_ensayos\CALIBRACION IR\MATERIAL_calibracion_fecha\
@@ -32,7 +32,7 @@ diary(char(fullfile(carpeta, "consola.txt")));
 s = serialport(PUERTO,115200); configureTerminator(s,"LF"); s.Timeout = 5; pause(2); flush(s);
 fid = fopen(base + ".csv",'w'); fprintf(fid,"t_pc_s,t_esp_ms,pwm_pct,T_termocupla,T_ir_obj,T_ir_amb,SP\n");
 
-D = zeros(0,7); LECT = zeros(0,8);   % t, SP, multimetro_punto, multimetro_centro, laser_punto, IR_prom, IR_amb, TC_bornera
+D = zeros(0,7); LECT = zeros(0,9);   % t, SP, multimetro, laser_punto, laser_cinta, laser_centro, IR_prom, IR_amb, TC_camara
 fig = figure('Name',nombre); setappdata(fig,'parar',false);
 uicontrol(fig,'Style','pushbutton','String','DETENER (guarda todo)','FontWeight','bold', ...
     'BackgroundColor',[1 .6 .6],'Units','normalized','Position',[.80 .94 .19 .05], ...
@@ -60,15 +60,16 @@ while toc(t0) < T_TOTAL + ENFRIAR
     if MODO == "multimetro" && paso >= 1 && paso <= numel(ESCALONES) && ~anotado(paso) && tt >= paso*T_PASO - T_AVISO && size(D,1) > 5
         anotado(paso) = true; beep; pause(0.2); beep;
         k = D(:,1) > tt - 30; ir_prom = median(D(k,5)); ir_amb = mean(D(k,6)); tc_b = mean(D(k,4));
-        r = inputdlg({sprintf('Escalon %g °C (IR marca %.1f °C).  MULTIMETRO junto al punto del IR (°C):', SPact, ir_prom), ...
-                      'Multimetro en el CENTRO de la lamina (°C)  [opcional]', ...
-                      'Termometro LASER en el punto del IR (°C)  [opcional]'}, ...
-                      'Anotar lectura', [1 70], {'','',''});
-        if isempty(r), r = {'','',''}; end
+        r = inputdlg({sprintf('Escalon %g °C (IR marca %.1f °C).  1) MULTIMETRO (termocupla pegada) (°C):', SPact, ir_prom), ...
+                      '2) LASER en el punto del IR, al lado de la cinta (°C)', ...
+                      '3) LASER sobre la cinta Kapton (°C)', ...
+                      '4) LASER en el CENTRO de la lamina (°C)'}, ...
+                      'Anotar lecturas (deja vacio lo que no midas)', [1 75], {'','','',''});
+        if isempty(r), r = {'','','',''}; end
         v3 = str2double(strrep(r, ',', '.'));
         LECT(end+1,:) = [tt SPact v3(:)' ir_prom ir_amb tc_b]; %#ok<SAGROW>
         if isvalid(fig), set(h5,'XData',LECT(:,1),'YData',LECT(:,3)); end
-        fprintf("[%6.0f s] ANOTADO  SP=%g  multimetro=%.1f  centro=%.1f  laser=%.1f  |  IR=%.1f\n", tt, SPact, v3, ir_prom);
+        fprintf("[%6.0f s] ANOTADO  SP=%g  multimetro=%.1f  laser_punto=%.1f  laser_cinta=%.1f  laser_centro=%.1f  |  IR=%.1f\n", tt, SPact, v3, ir_prom);
         flush(s); t_ult = toc(t0); continue
     end
     if tt - t_ult > 15, writeline(s,"S"); warning("No llegan datos hace 15 s. PWM apagado."); break; end
@@ -97,15 +98,16 @@ datos = array2table(D,'VariableNames',{'t_pc_s','t_esp_ms','pwm_pct','T_termocup
 if MODO == "bornera"      % referencia = termocupla en la bornera, ultimos 60 s de cada escalon
     for i = 1:numel(ESCALONES)
         k = datos.t_pc_s > i*T_PASO - 60 & datos.t_pc_s <= i*T_PASO; if nnz(k) < 5, continue; end
-        LECT(end+1,:) = [i*T_PASO ESCALONES(i) mean(datos.T_termocupla(k)) NaN NaN median(datos.T_ir_obj(k)) mean(datos.T_ir_amb(k)) NaN]; %#ok<SAGROW>
+        LECT(end+1,:) = [i*T_PASO ESCALONES(i) mean(datos.T_termocupla(k)) NaN NaN NaN median(datos.T_ir_obj(k)) mean(datos.T_ir_amb(k)) NaN]; %#ok<SAGROW>
     end
 end
-R = array2table(LECT,'VariableNames',{'t_s','SP_C','T_contacto_C','T_centro_C','T_laser_C','T_IR_C','T_amb_sensor_C','T_termocupla_camara_C'});
+R = array2table(LECT,'VariableNames',{'t_s','SP_C','T_contacto_C','Laser_punto_C','Laser_cinta_C','Laser_centro_C','T_IR_C','T_amb_sensor_C','T_termocupla_camara_C'});
 R = R(~isnan(R.T_contacto_C),:);
 if ~isempty(R)
     R.Error_IR_C = R.T_IR_C - R.T_contacto_C;
     K = @(T) (T + 273.15).^4;
     R.Emisividad_aprox = (K(R.T_IR_C) - K(R.T_amb_sensor_C)) ./ (K(R.T_contacto_C) - K(R.T_amb_sensor_C));
+    R.Error_laser_punto_C = R.Laser_punto_C - R.T_contacto_C;  R.Error_laser_cinta_C = R.Laser_cinta_C - R.T_contacto_C;
     rmse = sqrt(mean(R.Error_IR_C.^2));
     disp(R)
     fprintf("RMSE IR vs contacto: %.2f °C | sesgo medio: %+.2f °C | emisividad media aprox: %.3f\n", rmse, mean(R.Error_IR_C), mean(R.Emisividad_aprox));
