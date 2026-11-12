@@ -12,7 +12,7 @@ cd(CARPETA_DATOS);
 
 PUERTO   = "COM14";
 MATERIAL = "PS";         % PS = lamina BLANCA   |   PET = lamina TRANSPARENTE
-ENSAYO   = 2;            % numero de repeticion (1, 2, 3...)
+ENSAYO   = 3;            % numero de repeticion (1, 2, 3...)
 SP       = 85;           % °C. Ensayo de control ~10 °C por DEBAJO de Tg:  PS -> 85   |   PET -> 60
 DURACION = 600;          % s de control
 ENFRIAR  = 180;          % s registrando despues de apagar

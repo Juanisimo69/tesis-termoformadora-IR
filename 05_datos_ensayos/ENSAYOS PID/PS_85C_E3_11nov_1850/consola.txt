@@ -1,0 +1,144 @@
+Inicio 11-Nov-2026 18:50:09 | PS | PID | SP = 85 °C | Kp=1.3 Ki=0.01 Kd=10
+#CMD K Kp=1.3000 Ki=0.01000 Kd=10.000
+#CMD IR SP=85.0 Kp=1.300 Ki=0.01000 Kd=10.00
+t=    8 s  PWM=70.0  TC=  30.0  IR=  22.5
+t=   18 s  PWM=70.0  TC=  30.9  IR=  25.0
+t=   28 s  PWM=67.8  TC=  33.6  IR=  31.7
+t=   38 s  PWM=57.9  TC=  36.7  IR=  41.1
+t=   48 s  PWM=48.3  TC=  41.9  IR=  50.8
+t=   58 s  PWM=39.9  TC=  46.3  IR=  59.4
+t=   68 s  PWM=34.1  TC=  51.5  IR=  66.4
+t=   78 s  PWM=29.6  TC=  56.7  IR=  71.7
+t=   88 s  PWM=26.8  TC=  61.9  IR=  75.7
+t=   98 s  PWM=26.4  TC=  67.1  IR=  77.8
+t=  108 s  PWM=26.3  TC=  71.7  IR=  79.2
+t=  118 s  PWM=25.9  TC=  75.9  IR=  80.2
+t=  128 s  PWM=25.6  TC=  79.6  IR=  80.9
+t=  138 s  PWM=25.5  TC=  82.6  IR=  81.5
+t=  148 s  PWM=25.5  TC=  86.1  IR=  81.9
+t=  158 s  PWM=25.7  TC=  88.8  IR=  82.0
+t=  168 s  PWM=26.1  TC=  91.3  IR=  82.1
+t=  178 s  PWM=26.2  TC=  93.6  IR=  82.3
+t=  188 s  PWM=29.0  TC=  95.3  IR=  80.3
+t=  198 s  PWM=25.1  TC=  97.2  IR=  83.1
+t=  208 s  PWM=25.9  TC=  98.6  IR=  83.6
+t=  218 s  PWM=26.8  TC= 100.3  IR=  82.7
+t=  228 s  PWM=30.7  TC= 101.7  IR=  81.4
+t=  238 s  PWM=24.1  TC= 103.2  IR=  84.5
+t=  248 s  PWM=24.4  TC= 104.0  IR=  84.6
+t=  258 s  PWM=24.1  TC= 104.9  IR=  85.0
+t=  268 s  PWM=24.0  TC= 106.5  IR=  85.0
+t=  278 s  PWM=24.0  TC= 107.0  IR=  84.9
+t=  288 s  PWM=23.7  TC= 108.0  IR=  85.4
+t=  298 s  PWM=23.6  TC= 108.8  IR=  85.4
+t=  308 s  PWM=23.6  TC= 109.5  IR=  84.9
+t=  318 s  PWM=23.5  TC= 110.1  IR=  85.5
+t=  328 s  PWM=23.1  TC= 110.7  IR=  85.7
+t=  338 s  PWM=23.1  TC= 111.1  IR=  85.6
+t=  348 s  PWM=22.9  TC= 111.5  IR=  85.8
+t=  358 s  PWM=22.8  TC= 111.3  IR=  85.7
+t=  368 s  PWM=22.7  TC= 112.0  IR=  85.8
+t=  378 s  PWM=22.9  TC= 112.6  IR=  85.6
+t=  388 s  PWM=22.7  TC= 112.4  IR=  85.7
+t=  398 s  PWM=22.3  TC= 112.8  IR=  85.8
+t=  408 s  PWM=22.8  TC= 113.0  IR=  85.7
+t=  418 s  PWM=22.5  TC= 113.0  IR=  85.8
+t=  428 s  PWM=22.7  TC= 112.8  IR=  84.2
+t=  438 s  PWM=22.7  TC= 113.0  IR=  85.4
+t=  448 s  PWM=22.9  TC= 113.4  IR=  85.3
+t=  458 s  PWM=23.0  TC= 113.4  IR=  85.2
+t=  468 s  PWM=23.2  TC= 113.4  IR=  85.1
+t=  479 s  PWM=22.6  TC= 113.6  IR=  85.3
+t=  489 s  PWM=22.2  TC= 113.8  IR=  85.6
+t=  499 s  PWM=21.9  TC= 113.4  IR=  85.8
+t=  509 s  PWM=22.2  TC= 113.8  IR=  85.6
+t=  519 s  PWM=22.5  TC= 113.6  IR=  85.5
+t=  529 s  PWM=22.8  TC= 114.0  IR=  84.0
+t=  539 s  PWM=22.1  TC= 113.8  IR=  85.5
+t=  549 s  PWM=22.0  TC= 113.4  IR=  84.8
+t=  559 s  PWM=21.9  TC= 114.0  IR=  85.7
+t=  569 s  PWM=21.7  TC= 113.8  IR=  85.7
+t=  579 s  PWM=21.4  TC= 114.0  IR=  85.7
+t=  589 s  PWM=22.1  TC= 114.0  IR=  85.4
+t=  599 s  PWM=22.5  TC= 113.8  IR=  83.2
+[   601 s] Control terminado, registrando enfriamiento
+#CMD PWM=0
+t=  603 s  PWM= 0.0  TC= 113.6  IR=  85.0
+t=  605 s  PWM= 0.0  TC= 114.0  IR=  84.8
+t=  608 s  PWM= 0.0  TC= 113.8  IR=  84.5
+t=  610 s  PWM= 0.0  TC= 113.6  IR=  84.3
+t=  613 s  PWM= 0.0  TC= 113.6  IR=  84.0
+t=  615 s  PWM= 0.0  TC= 113.4  IR=  83.6
+t=  618 s  PWM= 0.0  TC= 112.8  IR=  83.3
+t=  620 s  PWM= 0.0  TC= 113.0  IR=  81.2
+t=  623 s  PWM= 0.0  TC= 112.6  IR=  81.4
+t=  625 s  PWM= 0.0  TC= 112.4  IR=  81.7
+t=  628 s  PWM= 0.0  TC= 112.2  IR=  81.7
+t=  630 s  PWM= 0.0  TC= 112.2  IR=  81.2
+t=  633 s  PWM= 0.0  TC= 111.8  IR=  80.7
+t=  635 s  PWM= 0.0  TC= 111.5  IR=  80.2
+t=  638 s  PWM= 0.0  TC= 110.9  IR=  79.6
+t=  640 s  PWM= 0.0  TC= 111.1  IR=  79.2
+t=  643 s  PWM= 0.0  TC= 110.5  IR=  78.7
+t=  645 s  PWM= 0.0  TC= 110.5  IR=  78.1
+t=  648 s  PWM= 0.0  TC= 110.1  IR=  77.5
+t=  650 s  PWM= 0.0  TC= 109.7  IR=  77.0
+t=  653 s  PWM= 0.0  TC= 109.2  IR=  76.5
+t=  655 s  PWM= 0.0  TC= 108.8  IR=  76.0
+t=  658 s  PWM= 0.0  TC= 108.8  IR=  75.3
+t=  660 s  PWM= 0.0  TC= 108.4  IR=  72.9
+t=  663 s  PWM= 0.0  TC= 107.6  IR=  73.3
+t=  665 s  PWM= 0.0  TC= 107.4  IR=  73.5
+t=  668 s  PWM= 0.0  TC= 106.7  IR=  72.9
+t=  670 s  PWM= 0.0  TC= 106.3  IR=  72.2
+t=  673 s  PWM= 0.0  TC= 106.1  IR=  71.7
+t=  675 s  PWM= 0.0  TC= 105.7  IR=  71.1
+t=  678 s  PWM= 0.0  TC= 105.5  IR=  70.5
+t=  680 s  PWM= 0.0  TC= 105.1  IR=  69.9
+t=  683 s  PWM= 0.0  TC= 104.7  IR=  69.4
+t=  685 s  PWM= 0.0  TC= 103.6  IR=  68.8
+t=  688 s  PWM= 0.0  TC= 102.8  IR=  68.2
+t=  690 s  PWM= 0.0  TC= 103.0  IR=  67.7
+t=  693 s  PWM= 0.0  TC= 103.0  IR=  65.4
+t=  695 s  PWM= 0.0  TC= 102.0  IR=  66.2
+t=  698 s  PWM= 0.0  TC= 101.7  IR=  66.1
+t=  700 s  PWM= 0.0  TC= 101.1  IR=  65.5
+t=  703 s  PWM= 0.0  TC= 100.9  IR=  64.9
+t=  705 s  PWM= 0.0  TC= 100.5  IR=  64.5
+t=  708 s  PWM= 0.0  TC= 100.1  IR=  63.9
+t=  710 s  PWM= 0.0  TC=  99.5  IR=  61.8
+t=  713 s  PWM= 0.0  TC=  98.8  IR=  63.0
+t=  715 s  PWM= 0.0  TC=  98.4  IR=  62.5
+t=  718 s  PWM= 0.0  TC=  98.0  IR=  62.0
+t=  720 s  PWM= 0.0  TC=  97.6  IR=  61.6
+t=  723 s  PWM= 0.0  TC=  96.7  IR=  59.6
+t=  726 s  PWM= 0.0  TC=  96.7  IR=  60.7
+t=  728 s  PWM= 0.0  TC=  95.9  IR=  60.2
+t=  731 s  PWM= 0.0  TC=  95.7  IR=  59.7
+t=  733 s  PWM= 0.0  TC=  94.9  IR=  59.3
+t=  736 s  PWM= 0.0  TC=  94.4  IR=  58.2
+t=  738 s  PWM= 0.0  TC=  94.2  IR=  58.4
+t=  741 s  PWM= 0.0  TC=  93.6  IR=  58.0
+t=  743 s  PWM= 0.0  TC=  93.0  IR=  57.6
+t=  746 s  PWM= 0.0  TC=  92.6  IR=  57.1
+t=  748 s  PWM= 0.0  TC=  92.2  IR=  56.6
+t=  751 s  PWM= 0.0  TC=  91.9  IR=  56.3
+t=  753 s  PWM= 0.0  TC=  91.3  IR=  56.0
+t=  756 s  PWM= 0.0  TC=  90.7  IR=  55.6
+t=  758 s  PWM= 0.0  TC=  90.3  IR=  55.3
+t=  761 s  PWM= 0.0  TC=  89.4  IR=  54.8
+t=  763 s  PWM= 0.0  TC=  89.4  IR=  54.5
+t=  766 s  PWM= 0.0  TC=  88.8  IR=  54.2
+t=  768 s  PWM= 0.0  TC=  88.2  IR=  53.8
+t=  771 s  PWM= 0.0  TC=  87.8  IR=  53.4
+t=  773 s  PWM= 0.0  TC=  87.8  IR=  53.2
+t=  776 s  PWM= 0.0  TC=  87.4  IR=  52.7
+t=  778 s  PWM= 0.0  TC=  86.7  IR=  52.4
+    <strong>Material</strong>    <strong>Control</strong>    <strong>SP_C</strong>    <strong>Ensayo</strong>    <strong>Kp</strong>      <strong>Ki</strong>     <strong>Kd</strong>    <strong>Error_final_C</strong>    <strong>Sobrepico_pct</strong>    <strong>T_subida_s</strong>    <strong>T_asent_2pct_s</strong>    <strong>PWM_max_pct</strong>    <strong>TC_max_C</strong>                 <strong>Carpeta</strong>              
+    <strong>________</strong>    <strong>_______</strong>    <strong>____</strong>    <strong>______</strong>    <strong>___</strong>    <strong>____</strong>    <strong>__</strong>    <strong>_____________</strong>    <strong>_____________</strong>    <strong>__________</strong>    <strong>______________</strong>    <strong>___________</strong>    <strong>________</strong>    <strong>__________________________________</strong>
+
+      "PS"       "PID"      85       2       1.3    0.01    10      -0.48367           1.45           82.009          232.03            70          114.25     "ENSAYOS PID\PS_85C_E3_11nov_1850"
+
+[Warning: UI components will not be included in the output. To include UI components, use the 'exportapp' function.] 
+Comparacion guardada en 05_datos_ensayos\PID VS PI\PS_85C_E2_PIvsPID (contra PS_85C_E2_11nov_1819.csv)
+Listo: todo guardado en 05_datos_ensayos\ENSAYOS PID\PS_85C_E3_11nov_1850  y fila agregada a resumen_ensayos.csv

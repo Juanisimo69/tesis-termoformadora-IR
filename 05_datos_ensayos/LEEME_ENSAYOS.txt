@@ -19,4 +19,13 @@ BITACORA
 06-nov  PI   PS_85C_E1            Completo. Llega a 85 °C en 475 s, termina en 86.5 °C (error -1.5 °C), no se estabiliza en 600 s.
         -> PID: error integrado (IAE) 36 % menor, 3 veces mas estable, misma potencia en regimen (~24 %).
 
-PENDIENTE: repeticiones E2 y E3 de PID y PI (PS 85 °C); luego PET 60 °C.
+11-nov  PID  PS_85C_E2 y E3       Completos. PID E3 se guardo como E2 y se renombro (mismo dia).
+11-nov  PI   PS_85C_E2 y E3       Completos.
+        RESUMEN PS 85 °C (3 repeticiones, promedio +- desviacion):
+          llega a 85 °C:  PI 485 +- 50 s   | PID 269 +- 30 s
+          error final:    PI -0.1 +- 1.4 °C | PID -0.3 +- 0.15 °C
+          IAE:            PI 6202 +- 334   | PID 4269 +- 240 (-31 %)
+          variacion >300 s: PI +-0.94 °C    | PID +-0.48 °C
+        Nota: un termometro laser de mano marco 100-110 °C con el MLX en ~85 °C (pendiente aclarar con la calibracion).
+
+PENDIENTE: calibracion IR vs termocupla de contacto; PET 60 °C (3 PID + 1 PI); linea base por termocupla; termoformado real.
