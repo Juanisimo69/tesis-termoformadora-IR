@@ -11,9 +11,9 @@ if ~isfolder(CARPETA_DATOS), mkdir(CARPETA_DATOS); end
 cd(CARPETA_DATOS);
 
 PUERTO   = "COM14";
-MATERIAL = "PS";         % PS = lamina BLANCA   |   PET = lamina TRANSPARENTE
-ENSAYO   = 3;            % numero de repeticion (1, 2, 3...)
-SP       = 85;           % °C. Ensayo de control ~10 °C por DEBAJO de Tg:  PS -> 85   |   PET -> 60
+MATERIAL = "PET";         % PS = lamina BLANCA   |   PET = lamina TRANSPARENTE
+ENSAYO   = 1;            % numero de repeticion (1, 2, 3...)
+SP       = 60;           % °C. Ensayo de control ~10 °C por DEBAJO de Tg:  PS -> 85   |   PET -> 60
 DURACION = 600;          % s de control
 ENFRIAR  = 180;          % s registrando despues de apagar
 GANANCIAS = [0.639 0.00362 0];   % [Kp Ki Kd]  PI original (diseno MATLAB, margen de fase 75°). Kd = 0 -> PI

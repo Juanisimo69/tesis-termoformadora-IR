@@ -16,7 +16,7 @@ cd(CARPETA_DATOS);
 
 PUERTO   = "COM14";
 MODO     = "multimetro";         % "multimetro" o "bornera"
-MATERIAL = "PS";                 % PS = lamina BLANCA | PET = lamina TRANSPARENTE
+MATERIAL = "PET";                 % PS = lamina BLANCA | PET = lamina TRANSPARENTE
 if MATERIAL == "PS", ESCALONES = [45 60 75 85]; else, ESCALONES = [40 50 60 65]; end   % siempre por debajo de Tg
 T_PASO   = 300;                  % s en cada escalon
 T_AVISO  = 30;                   % s antes de terminar el escalon sale la ventana para anotar

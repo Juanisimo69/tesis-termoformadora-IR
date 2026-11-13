@@ -1,0 +1,174 @@
+Inicio 13-Nov-2026 15:44:56 | PET | modo multimetro | escalones [40 50 60 65] °C | 300 s cada uno
+[     0 s] Escalon 1: referencia 40 °C
+#CMD K Kp=1.3000 Ki=0.01000 Kd=10.000
+#CMD IR SP=40.0 Kp=1.300 Ki=0.01000 Kd=10.00
+t=    8 s  SP=  40  PWM=21.2  TC=  35.6  IR=  24.7
+t=   18 s  SP=  40  PWM=22.4  TC=  35.6  IR=  25.0
+t=   28 s  SP=  40  PWM=22.9  TC=  35.9  IR=  25.7
+t=   38 s  SP=  40  PWM=21.6  TC=  36.3  IR=  27.3
+t=   48 s  SP=  40  PWM=19.3  TC=  36.7  IR=  29.6
+t=   58 s  SP=  40  PWM=16.5  TC=  37.7  IR=  32.2
+t=   68 s  SP=  40  PWM=13.0  TC=  38.8  IR=  35.0
+t=   78 s  SP=  40  PWM=10.3  TC=  39.8  IR=  37.5
+t=   88 s  SP=  40  PWM= 7.8  TC=  41.7  IR=  39.6
+t=   98 s  SP=  40  PWM= 5.7  TC=  43.6  IR=  41.5
+t=  108 s  SP=  40  PWM= 3.9  TC=  45.5  IR=  42.9
+t=  118 s  SP=  40  PWM= 1.9  TC=  47.3  IR=  44.2
+t=  128 s  SP=  40  PWM= 1.0  TC=  49.6  IR=  45.0
+t=  138 s  SP=  40  PWM= 0.3  TC=  50.9  IR=  45.3
+t=  148 s  SP=  40  PWM= 0.0  TC=  52.3  IR=  45.4
+t=  158 s  SP=  40  PWM= 0.4  TC=  53.8  IR=  45.0
+t=  168 s  SP=  40  PWM= 0.7  TC=  54.6  IR=  44.6
+t=  178 s  SP=  40  PWM= 5.2  TC=  55.9  IR=  42.3
+t=  188 s  SP=  40  PWM= 1.4  TC=  56.1  IR=  43.4
+t=  198 s  SP=  40  PWM= 1.9  TC=  57.3  IR=  42.8
+t=  208 s  SP=  40  PWM= 8.7  TC=  57.5  IR=  38.8
+t=  218 s  SP=  40  PWM= 1.6  TC=  57.8  IR=  41.9
+t=  228 s  SP=  40  PWM=12.0  TC=  58.0  IR=  37.0
+t=  238 s  SP=  40  PWM= 3.1  TC=  58.6  IR=  41.2
+t=  248 s  SP=  40  PWM= 3.8  TC=  58.6  IR=  40.9
+t=  258 s  SP=  40  PWM= 4.0  TC=  58.8  IR=  40.9
+t=  268 s  SP=  40  PWM= 4.1  TC=  58.6  IR=  40.7
+[   270 s] ANOTADO  SP=40  multimetro=49.0  laser_punto=50.5  laser_cinta=49.0  laser_centro=51.0  |  IR=40.9
+[   308 s] Escalon 2: referencia 50 °C
+#CMD IR SP=50.0 Kp=1.300 Ki=0.01000 Kd=10.00
+t=  314 s  SP=  50  PWM=21.6  TC=  59.0  IR=  36.5
+t=  324 s  SP=  50  PWM=11.1  TC=  59.2  IR=  41.5
+t=  334 s  SP=  50  PWM=10.4  TC=  59.4  IR=  42.3
+t=  344 s  SP=  50  PWM=10.7  TC=  59.8  IR=  43.5
+t=  354 s  SP=  50  PWM=10.0  TC=  60.2  IR=  44.6
+t=  364 s  SP=  50  PWM= 9.2  TC=  60.9  IR=  45.8
+t=  374 s  SP=  50  PWM= 8.2  TC=  61.7  IR=  47.0
+t=  384 s  SP=  50  PWM= 7.3  TC=  62.5  IR=  47.9
+t=  394 s  SP=  50  PWM= 6.6  TC=  63.4  IR=  48.6
+t=  404 s  SP=  50  PWM= 6.3  TC=  64.0  IR=  49.1
+t=  414 s  SP=  50  PWM= 6.2  TC=  65.0  IR=  49.4
+t=  424 s  SP=  50  PWM= 5.8  TC=  65.7  IR=  49.6
+t=  434 s  SP=  50  PWM= 9.5  TC=  66.3  IR=  48.0
+t=  444 s  SP=  50  PWM= 4.2  TC=  67.3  IR=  50.5
+t=  454 s  SP=  50  PWM= 6.8  TC=  68.0  IR=  49.5
+t=  464 s  SP=  50  PWM= 4.4  TC=  68.4  IR=  50.8
+t=  474 s  SP=  50  PWM= 4.8  TC=  68.8  IR=  50.7
+t=  484 s  SP=  50  PWM= 5.4  TC=  69.0  IR=  50.4
+t=  494 s  SP=  50  PWM= 5.7  TC=  69.4  IR=  50.2
+t=  504 s  SP=  50  PWM= 6.1  TC=  69.8  IR=  49.9
+t=  514 s  SP=  50  PWM= 7.2  TC=  70.0  IR=  49.3
+t=  524 s  SP=  50  PWM= 7.6  TC=  70.0  IR=  48.9
+t=  534 s  SP=  50  PWM= 8.1  TC=  70.0  IR=  48.6
+t=  544 s  SP=  50  PWM= 8.2  TC=  70.3  IR=  48.6
+t=  554 s  SP=  50  PWM= 8.5  TC=  70.3  IR=  46.4
+t=  564 s  SP=  50  PWM= 8.7  TC=  70.3  IR=  48.4
+[   570 s] ANOTADO  SP=50  multimetro=61.0  laser_punto=64.0  laser_cinta=64.0  laser_centro=68.0  |  IR=48.5
+[   649 s] Escalon 3: referencia 60 °C
+#CMD IR SP=60.0 Kp=1.300 Ki=0.01000 Kd=10.00
+t=  651 s  SP=  60  PWM=12.1  TC=  71.5  IR=  50.9
+t=  661 s  SP=  60  PWM=13.1  TC=  71.1  IR=  50.8
+t=  671 s  SP=  60  PWM=13.9  TC=  71.9  IR=  50.9
+t=  681 s  SP=  60  PWM=14.4  TC=  72.1  IR=  51.2
+t=  691 s  SP=  60  PWM=14.6  TC=  72.1  IR=  51.6
+t=  701 s  SP=  60  PWM=14.2  TC=  72.8  IR=  52.4
+t=  711 s  SP=  60  PWM=14.1  TC=  73.2  IR=  52.9
+t=  721 s  SP=  60  PWM=13.9  TC=  73.8  IR=  53.6
+t=  731 s  SP=  60  PWM=12.9  TC=  74.2  IR=  54.8
+t=  741 s  SP=  60  PWM=12.3  TC=  74.4  IR=  55.4
+t=  751 s  SP=  60  PWM=12.1  TC=  75.5  IR=  56.1
+t=  761 s  SP=  60  PWM=12.3  TC=  75.9  IR=  56.5
+t=  771 s  SP=  60  PWM=12.6  TC=  76.5  IR=  55.2
+t=  781 s  SP=  60  PWM=15.5  TC=  76.9  IR=  54.8
+t=  791 s  SP=  60  PWM=15.0  TC=  77.6  IR=  57.5
+t=  801 s  SP=  60  PWM=10.9  TC=  78.2  IR=  54.2
+t=  811 s  SP=  60  PWM=11.0  TC=  79.0  IR=  58.5
+t=  821 s  SP=  60  PWM=11.0  TC=  79.2  IR=  58.8
+t=  831 s  SP=  60  PWM=10.6  TC=  80.1  IR=  59.3
+t=  841 s  SP=  60  PWM=10.3  TC=  80.5  IR=  59.7
+t=  851 s  SP=  60  PWM=10.3  TC=  80.9  IR=  59.6
+t=  861 s  SP=  60  PWM= 9.7  TC=  81.5  IR=  60.1
+t=  871 s  SP=  60  PWM= 9.6  TC=  81.9  IR=  60.1
+[   871 s] ANOTADO  SP=60  multimetro=72.0  laser_punto=87.0  laser_cinta=78.0  laser_centro=84.0  |  IR=60.0
+[   901 s] Escalon 4: referencia 65 °C
+#CMD IR SP=65.0 Kp=1.300 Ki=0.01000 Kd=10.00
+t=  907 s  SP=  65  PWM= 5.6  TC=  83.0  IR=  56.0
+t=  917 s  SP=  65  PWM= 8.1  TC=  83.0  IR=  59.4
+t=  927 s  SP=  65  PWM= 9.3  TC=  82.3  IR=  59.1
+t=  938 s  SP=  65  PWM=10.5  TC=  83.0  IR=  58.8
+t=  948 s  SP=  65  PWM=11.4  TC=  82.6  IR=  58.4
+t=  958 s  SP=  65  PWM=12.7  TC=  82.8  IR=  58.1
+t=  968 s  SP=  65  PWM=13.8  TC=  83.0  IR=  57.8
+t=  978 s  SP=  65  PWM=14.7  TC=  82.8  IR=  57.6
+t=  988 s  SP=  65  PWM=14.9  TC=  82.8  IR=  58.0
+t=  998 s  SP=  65  PWM=14.5  TC=  82.8  IR=  58.5
+t= 1008 s  SP=  65  PWM=14.7  TC=  82.8  IR=  58.0
+t= 1018 s  SP=  65  PWM=14.8  TC=  83.2  IR=  59.3
+t= 1028 s  SP=  65  PWM=14.4  TC=  83.2  IR=  59.9
+t= 1038 s  SP=  65  PWM=13.9  TC=  83.6  IR=  60.5
+t= 1048 s  SP=  65  PWM=13.7  TC=  83.6  IR=  61.0
+t= 1058 s  SP=  65  PWM=13.9  TC=  84.2  IR=  61.4
+t= 1068 s  SP=  65  PWM=13.7  TC=  84.6  IR=  61.8
+t= 1078 s  SP=  65  PWM=13.6  TC=  85.1  IR=  60.1
+t= 1088 s  SP=  65  PWM=13.4  TC=  85.3  IR=  62.5
+t= 1098 s  SP=  65  PWM=13.3  TC=  85.7  IR=  62.7
+t= 1108 s  SP=  65  PWM=13.3  TC=  86.5  IR=  62.7
+t= 1118 s  SP=  65  PWM=13.6  TC=  86.1  IR=  63.1
+t= 1128 s  SP=  65  PWM=13.8  TC=  87.2  IR=  63.0
+t= 1138 s  SP=  65  PWM=13.6  TC=  87.2  IR=  63.2
+t= 1148 s  SP=  65  PWM=13.9  TC=  87.6  IR=  63.2
+t= 1158 s  SP=  65  PWM=14.5  TC=  87.8  IR=  63.0
+t= 1168 s  SP=  65  PWM=14.4  TC=  87.8  IR=  63.1
+[  1172 s] ANOTADO  SP=65  multimetro=76.0  laser_punto=93.0  laser_cinta=83.0  laser_centro=88.0  |  IR=63.1
+[  1213 s] Escalones terminados, enfriando
+#CMD PWM=0
+t= 1214 s  SP= NaN  PWM= 0.0  TC=  88.6  IR=  64.3
+t= 1217 s  SP= NaN  PWM= 0.0  TC=  89.2  IR=  64.3
+t= 1219 s  SP= NaN  PWM= 0.0  TC=  89.0  IR=  64.2
+t= 1222 s  SP= NaN  PWM= 0.0  TC=  89.2  IR=  64.1
+t= 1224 s  SP= NaN  PWM= 0.0  TC=  89.2  IR=  63.9
+t= 1227 s  SP= NaN  PWM= 0.0  TC=  89.2  IR=  63.2
+t= 1229 s  SP= NaN  PWM= 0.0  TC=  89.2  IR=  62.5
+t= 1232 s  SP= NaN  PWM= 0.0  TC=  89.0  IR=  61.8
+t= 1234 s  SP= NaN  PWM= 0.0  TC=  89.2  IR=  63.5
+t= 1237 s  SP= NaN  PWM= 0.0  TC=  89.0  IR=  63.3
+t= 1239 s  SP= NaN  PWM= 0.0  TC=  89.0  IR=  63.1
+t= 1242 s  SP= NaN  PWM= 0.0  TC=  89.0  IR=  62.9
+t= 1244 s  SP= NaN  PWM= 0.0  TC=  88.6  IR=  62.6
+t= 1247 s  SP= NaN  PWM= 0.0  TC=  89.0  IR=  62.3
+t= 1249 s  SP= NaN  PWM= 0.0  TC=  88.4  IR=  62.0
+t= 1252 s  SP= NaN  PWM= 0.0  TC=  88.6  IR=  61.7
+t= 1254 s  SP= NaN  PWM= 0.0  TC=  88.8  IR=  61.3
+t= 1257 s  SP= NaN  PWM= 0.0  TC=  88.6  IR=  61.0
+t= 1259 s  SP= NaN  PWM= 0.0  TC=  88.6  IR=  60.6
+t= 1262 s  SP= NaN  PWM= 0.0  TC=  88.4  IR=  60.3
+t= 1264 s  SP= NaN  PWM= 0.0  TC=  88.0  IR=  60.0
+t= 1267 s  SP= NaN  PWM= 0.0  TC=  88.0  IR=  59.6
+t= 1269 s  SP= NaN  PWM= 0.0  TC=  88.0  IR=  59.1
+t= 1272 s  SP= NaN  PWM= 0.0  TC=  87.2  IR=  58.8
+t= 1274 s  SP= NaN  PWM= 0.0  TC=  87.6  IR=  58.5
+t= 1277 s  SP= NaN  PWM= 0.0  TC=  86.7  IR=  58.1
+t= 1279 s  SP= NaN  PWM= 0.0  TC=  87.2  IR=  57.8
+t= 1282 s  SP= NaN  PWM= 0.0  TC=  86.7  IR=  57.4
+t= 1284 s  SP= NaN  PWM= 0.0  TC=  86.7  IR=  57.0
+t= 1287 s  SP= NaN  PWM= 0.0  TC=  86.3  IR=  56.6
+t= 1289 s  SP= NaN  PWM= 0.0  TC=  86.1  IR=  56.2
+t= 1292 s  SP= NaN  PWM= 0.0  TC=  86.1  IR=  55.9
+t= 1294 s  SP= NaN  PWM= 0.0  TC=  85.7  IR=  55.5
+t= 1297 s  SP= NaN  PWM= 0.0  TC=  85.3  IR=  55.1
+t= 1299 s  SP= NaN  PWM= 0.0  TC=  85.1  IR=  54.7
+t= 1302 s  SP= NaN  PWM= 0.0  TC=  85.1  IR=  53.4
+t= 1304 s  SP= NaN  PWM= 0.0  TC=  84.8  IR=  54.1
+t= 1307 s  SP= NaN  PWM= 0.0  TC=  84.6  IR=  53.7
+t= 1309 s  SP= NaN  PWM= 0.0  TC=  84.0  IR=  53.4
+t= 1312 s  SP= NaN  PWM= 0.0  TC=  84.0  IR=  53.1
+t= 1314 s  SP= NaN  PWM= 0.0  TC=  83.6  IR=  52.7
+t= 1317 s  SP= NaN  PWM= 0.0  TC=  83.4  IR=  50.7
+t= 1319 s  SP= NaN  PWM= 0.0  TC=  83.0  IR=  52.0
+     <strong>t_s</strong>      <strong>SP_C</strong>    <strong>T_contacto_C</strong>    <strong>Laser_punto_C</strong>    <strong>Laser_cinta_C</strong>    <strong>Laser_centro_C</strong>    <strong>T_IR_C</strong>    <strong>T_amb_sensor_C</strong>    <strong>T_termocupla_camara_C</strong>    <strong>Error_IR_C</strong>    <strong>Emisividad_aprox</strong>    <strong>Error_laser_punto_C</strong>    <strong>Error_laser_cinta_C</strong>
+    <strong>______</strong>    <strong>____</strong>    <strong>____________</strong>    <strong>_____________</strong>    <strong>_____________</strong>    <strong>______________</strong>    <strong>______</strong>    <strong>______________</strong>    <strong>_____________________</strong>    <strong>__________</strong>    <strong>________________</strong>    <strong>___________________</strong>    <strong>___________________</strong>
+
+    270.15     40          49             50.5              49                51          40.85         24.469               58.511               -8.15          0.64123                 1.5                     0         
+    570.26     50          61               64              64                68          48.53         25.382                70.19              -12.47          0.61114                   3                     3         
+    871.38     60          72               87              78                84          59.95          26.77               81.211              -12.05          0.69174                  15                     6         
+      1172     65          76               93              83                88          63.11         28.561               87.799              -12.89          0.68424                  17                     7         
+
+RMSE IR vs contacto: 11.55 °C | sesgo medio: -11.39 °C | emisividad media aprox: 0.657
+Correccion lineal sugerida: T_real = 1.1707 * T_IR + 2.325
+[Warning: UI components will not be included in the output. To include UI components, use the 'exportapp' function.] 
+Listo: todo guardado en 05_datos_ensayos\CALIBRACION IR\PET_calibracion_13nov_1544

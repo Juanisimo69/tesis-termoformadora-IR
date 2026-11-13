@@ -28,4 +28,16 @@ BITACORA
           variacion >300 s: PI +-0.94 °C    | PID +-0.48 °C
         Nota: un termometro laser de mano marco 100-110 °C con el MLX en ~85 °C (pendiente aclarar con la calibracion).
 
-PENDIENTE: calibracion IR vs termocupla de contacto; PET 60 °C (3 PID + 1 PI); linea base por termocupla; termoformado real.
+13-nov  Reparacion previa: puente rectificador GBU1510 en corto (sin disipador) -> cambiado. Termocupla con cable flojo -> ajustado.
+13-nov  PID  PET_60C_E1/E2/E3   Completos (parche Kapton en el punto del IR). Llega a 60 °C en 113 +- 6 s, max 63.2 +- 0.1 °C,
+                                 error final -0.9 +- 0.2 °C. El centro de la lamina se puso blanco (cristalizacion).
+13-nov  PI   PET_60C_E1         Completo. Llega a 60 °C en 382 s, max 61.1 °C, error final -0.7 °C.
+        Intentos cortados (12:02, 13:00, 14:16, 15:41-15:43): el monitor serial de VS Code no soltaba el puerto -> cerrar con la caneca.
+13-nov  CALIBRACION IR (multimetro tipo K de contacto + laser e=0.95), carpeta CALIBRACION IR\
+        PS : MLX marca MUCHO menos: 47/61/73/82 vs contacto 60/82/101/116 °C. Laser coincide con contacto (+-5 °C).
+             Correccion PS: T_real = 1.597*T_IR - 15.3  (residuo 0.5 °C). Los ensayos 'PS 85 °C' fueron ~120 °C reales.
+        PET: 41/48.5/60/63 vs contacto 49/61/72/76 °C. Correccion PET: T_real = 1.171*T_IR + 2.3 (residuo 1.1 °C).
+             El laser sobre el parche Kapton marco hasta 17 °C mas que el contacto: el Kapton absorbe la luz del cuarzo.
+        Hipotesis: el cilindro roscado de la tapa v2 y el agujero del MDF recortan el campo de vision del MLX -> caja v3.
+
+PENDIENTE: caja v3 + repetir calibracion; meter correccion en firmware; termoformado real; linea base por termocupla.

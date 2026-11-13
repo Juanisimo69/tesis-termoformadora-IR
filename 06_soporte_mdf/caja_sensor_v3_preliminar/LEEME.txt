@@ -1,0 +1,2 @@
+PRELIMINAR - no imprimir todavia.
+Falta verificar medidas del GY-906 (placa, altura y posicion de la lata). Ver generar_caja_v3.py.

@@ -11,9 +11,9 @@ if ~isfolder(CARPETA_DATOS), mkdir(CARPETA_DATOS); end
 cd(CARPETA_DATOS);
 
 PUERTO   = "COM14";
-MATERIAL = "PS";         % PS = lamina BLANCA   |   PET = lamina TRANSPARENTE
+MATERIAL = "PET";         % PS = lamina BLANCA   |   PET = lamina TRANSPARENTE
 ENSAYO   = 3;            % numero de repeticion (1, 2, 3...)
-SP       = 85;           % °C. Ensayo de control ~10 °C por DEBAJO de Tg:  PS -> 85   |   PET -> 60
+SP       = 60;           % °C. Ensayo de control ~10 °C por DEBAJO de Tg:  PS -> 85   |   PET -> 60
 DURACION = 600;          % s de control
 ENFRIAR  = 180;          % s registrando despues de apagar
 GANANCIAS = [1.3 0.010 10];   % [Kp Ki Kd]  PID (sintonizado con el modelo de 2 modos, 6-nov)
