@@ -17,9 +17,9 @@ from manifold3d import Manifold, CrossSection
 # ---------------- MEDIDAS EXTERIORES (fijas por el soporte de MDF) ----------------
 BOX_X, BOX_Y, BOX_H = 15.625, 20.625, 11.0
 # ---------------- MEDIDAS DEL SENSOR (VERIFICAR CON CALIBRADOR) -------------------
-PCB_W, PCB_L, PCB_T = 11.0, 17.0, 1.6     # placa GY-906 (ancho x largo x espesor)
-CAN_FLANGE_D = 9.4                        # diametro de la pestana de la lata (pegada a la placa)
-CAN_H        = 4.5                        # altura de la lata medida desde la placa
+PCB_W, PCB_L, PCB_T = 11.5, 16.5, 1.5     # placa GY-906 (ancho x largo x espesor)  [medido: largo 16.5, espesor 1.5]
+CAN_FLANGE_D = 8.0                        # diametro de la lata [medido: 8 mm]
+CAN_H        = 5.0                        # altura de la lata sobre la placa [7.3 total - 1.5 placa - ~0.8 soldadura]
 CAN_DX, CAN_DY = 0.0, 0.0                 # descentrado de la lata respecto al centro de la placa
 SMD_H        = 1.0                        # altura de los componentes del lado de la lata
 HEADER_END   = +1                         # +1: pines del lado +Y ; -1: lado -Y
@@ -51,7 +51,7 @@ lip_in  = box(cav_x - 2*FIT - 2*RAIL, cav_y - 2*FIT - 2*RAIL, lip_h + 1, z0=LID_
 tapa = tapa + (lip_out - lip_in)
 # agujero de la lata (pasante) con avellanado de 50 grados por debajo para no recortar la vision
 cx, cy = CAN_DX, CAN_DY
-hole_d = CAN_FLANGE_D + 0.4
+hole_d = CAN_FLANGE_D + 0.6
 tapa = tapa - cyl(hole_d, LID_T + lip_h + 2, cx, cy, -1)
 tapa = tapa - cyl(hole_d + 2*LID_T*1.2, 0.01, cx, cy, -0.005, d2=hole_d)  # (marcador)
 tapa = tapa - Manifold.cylinder(LID_T + 0.01, (hole_d + 2*LID_T*1.19)/2, hole_d/2, 96).translate([cx, cy, -0.005])
@@ -105,7 +105,7 @@ for a, (axis, hidx, lab, w) in zip(ax, [([1, 0, 0], 1, "Corte a lo LARGO (eje Y)
         for d in s3.discrete:
             a.fill(d[:, hidx], d[:, 2], color=col, ec="k", lw=0.6)
     a.add_patch(plt.Rectangle((-w/2, LID_T + SEAT), w, PCB_T, color="#2e7d32", alpha=.85))
-    a.add_patch(plt.Rectangle((-CAN_FLANGE_D/2 + 0.6, LID_T + SEAT - CAN_H), CAN_FLANGE_D - 1.2, CAN_H, color="#455a64"))
+    a.add_patch(plt.Rectangle((-CAN_FLANGE_D/2, LID_T + SEAT - CAN_H), CAN_FLANGE_D, CAN_H, color="#455a64"))
     a.add_patch(plt.Rectangle((-BOX_Y/2-6, -3), BOX_Y/2+6-5.3, 3, color="#c8a27a")); a.add_patch(plt.Rectangle((5.3, -3), BOX_Y/2+1, 3, color="#c8a27a"))
     a.text(0, -5.2, "fondo MDF 3 mm (agujero 10.6)", fontsize=7, ha="center")
     zt = LID_T + SEAT - CAN_H

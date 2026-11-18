@@ -1,0 +1,4 @@
+Caja del sensor IR v3 (GY-906).
+Medidas usadas: placa 16.5 x 11.5 x 1.5 mm, lata 8 mm de diametro y 5.0 mm de alto, centrada en la placa.
+Imprimir: tapa_v3.stl con la cara grande sobre la cama; cuerpo_v3.stl ya viene con el techo sobre la cama. ABS, 0.2 mm, 100% relleno.
+Si algo no cuadra, cambiar las medidas al inicio de generar_caja_v3.py y volver a correrlo.
